@@ -9,7 +9,7 @@ const app = express();
 // ----------------------
 // Allow requests from localhost:3000
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://maintenance-kpi.azurewebsites.net',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
