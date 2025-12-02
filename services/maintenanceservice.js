@@ -9,40 +9,63 @@ router.post("/add", async (req, res) => {
 
     const query = `
       INSERT INTO "Preventive_maintenance" (
-        "VOH -Energy", "VOH-objective", "Voh-realisé",
-        "Energy-consumption ", "Energy-consumption-objective", "Energy-consumption-realise",
-        "Maintenance-PO ", "Maintenance-PO-objective", "Maintenance-PO-realise",
-        "Prenventif-Real ", "Prenventif-Real-objective", "Prenventif-Real-realise",
-        "Maintenance-Cost", "Maintenance-Cost-objective", "Maintenance-Cost-realise",
-        "MTBF", "MTBF-Target", "MTBF-Completed",
-        "MTTR", "MTTR-Target", "MTTR-Completed",
-        "Availability", "Availability-objective", "Availability-realise",
-        "Total-Hours-lost", "Total-hours-lost-Target", "Total-hour-lost-completed",
-        "Factory-efficiency", "Factory-efficiency-objective", "Factory-efficiency-realise",
-        "spare parts PO", "spare-parts-PO-objective", "spare-parts-PO-realise",
-        "created-date"
+        "VOH-objective",
+        "Voh-realise",
+        "Energy-consumption-objective",
+        "Energy-consumption-realise",
+        "Maintenance-PO-objective",
+        "Maintenance-PO-realise",
+        "Prenventif-Real-objective",
+        "Prenventif-Real-realise",
+        "Maintenance-Cost-objective",
+        "Maintenance-Cost-realise",
+        "MTBF-Target",
+        "MTBF-Completed",
+        "MTTR-Target",
+        "MTTR-Completed",
+        "Availability-objective",
+        "Availability-realise",
+        "Total-hours-lost-Target",
+        "Total-hours-lost-completed",
+        "Factory-efficiency-objective",
+        "Factory-efficiency-realise",
+        "created-date",
+        "Status",
+        "spare-parts-PO-objective",
+        "spare-parts-PO-realise"
       )
       VALUES (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,
-        $17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,
-        $31,$32,$33,$34
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,
+        $15,$16,$17,$18,$19,$20,$21,$22,$23,$24
       )
       RETURNING *;
     `;
 
     const values = [
-      data["VOH -Energy"], data["VOH-objective"], data["Voh-realisé"],
-      data["Energy-consumption"], data["Energy-consumption-objective"], data["Energy-consumption-realise"],
-      data["Maintenance-PO"], data["Maintenance-PO-objective"], data["Maintenance-PO-realise"],
-      data["Prenventif-Real"], data["Prenventif-Real-objective"], data["Prenventif-Real-realise"],
-      data["Maintenance-Cost"], data["Maintenance-Cost-objective"], data["Maintenance-Cost-realise"],
-      data["MTBF"], data["MTBF-Target"], data["MTBF-Completed"],
-      data["MTTR"], data["MTTR-Target"], data["MTTR-Completed"],
-      data["Availability"], data["Availability-objective"], data["Availability-realise"],
-      data["Total-Hours-lost"], data["Total-hours-lost-Target"], data["Total-hour-lost-completed"],
-      data["Factory-efficiency"], data["Factory-efficiency-objective"], data["Factory-efficiency-realise"],
-      data["spare parts PO"], data["spare-parts-PO-objective"], data["spare-parts-PO-realise"],
-      data["created-date"]
+      data["VOH-objective"],
+      data["Voh-realise"],
+      data["Energy-consumption-objective"],
+      data["Energy-consumption-realise"],
+      data["Maintenance-PO-objective"],
+      data["Maintenance-PO-realise"],
+      data["Prenventif-Real-objective"],
+      data["Prenventif-Real-realise"],
+      data["Maintenance-Cost-objective"],
+      data["Maintenance-Cost-realise"],
+      data["MTBF-Target"],
+      data["MTBF-Completed"],
+      data["MTTR-Target"],
+      data["MTTR-Completed"],
+      data["Availability-objective"],
+      data["Availability-realise"],
+      data["Total-hours-lost-Target"],
+      data["Total-hours-lost-completed"],
+      data["Factory-efficiency-objective"],
+      data["Factory-efficiency-realise"],
+      data["created-date"],
+      data["Status"],
+      data["spare-parts-PO-objective"],
+      data["spare-parts-PO-realise"]
     ];
 
     const result = await db.query(query, values);
@@ -51,11 +74,13 @@ router.post("/add", async (req, res) => {
       message: "Preventive maintenance added successfully",
       data: result.rows[0],
     });
+
   } catch (error) {
-    console.error("Error inserting maintenance:", error);
+    console.error("❌ Error inserting maintenance:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 // ✅ NEW GET endpoint to fetch all maintenances
 router.get("/list", async (req, res) => {
