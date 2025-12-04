@@ -31,8 +31,8 @@ router.post("/add", async (req, res) => {
         "Factory-efficiency-realise",
         "created-date",
         "Status",
-        "spare-parts-PO-objective",
-        "spare-parts-PO-realise"
+        "spare-parts-stock-objective",
+        "spare-parts-stock-realise"
       )
       VALUES (
         $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,
@@ -64,8 +64,8 @@ router.post("/add", async (req, res) => {
       data["Factory-efficiency-realise"],
       data["created-date"],
       data["Status"],
-      data["spare-parts-PO-objective"],
-      data["spare-parts-PO-realise"]
+      data["spare-parts-stock-objective"],
+      data["spare-parts-stock-realise"]
     ];
 
     const result = await db.query(query, values);
