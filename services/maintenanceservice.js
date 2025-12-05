@@ -112,29 +112,75 @@ router.put("/edit/:id", async (req, res) => {
   const form = req.body;
 
   try {
-    const result = await db.query(
-      `UPDATE "Preventive_maintenance"
-       SET "VOH-objective"=$1, "Voh-realisé"=$2, "Energy-consumption-objective"=$3, "Energy-consumption-realise"=$4,
-           "Maintenance-PO-objective"=$5, "Maintenance-PO-realise"=$6, "Maintenance-Cost-objective"=$7, "Maintenance-Cost-realise"=$8
-       WHERE maintenance_id=$9
-       RETURNING *`,
-      [
-        form["VOH-objective"],
-        form["Voh-realisé"],
-        form["Energy-consumption-objective"],
-        form["Energy-consumption-realise"],
-        form["Maintenance-PO-objective"],
-        form["Maintenance-PO-realise"],
-        form["Maintenance-Cost-objective"],
-        form["Maintenance-Cost-realise"],
-        id
-      ]
-    );
-    res.status(200).json(result.rows[0]);
+    const query = `
+      UPDATE "Preventive_maintenance"
+      SET 
+        "VOH-objective" = $1,
+        "Voh-realise" = $2,
+        "Energy-consumption-objective" = $3,
+        "Energy-consumption-realise" = $4,
+        "Maintenance-PO-objective" = $5,
+        "Maintenance-PO-realise" = $6,
+        "Prenventif-Real-objective" = $7,
+        "Prenventif-Real-realise" = $8,
+        "Maintenance-Cost-objective" = $9,
+        "Maintenance-Cost-realise" = $10,
+        "MTBF-Target" = $11,
+        "MTBF-Completed" = $12,
+        "MTTR-Target" = $13,
+        "MTTR-Completed" = $14,
+        "Availability-objective" = $15,
+        "Availability-realise" = $16,
+        "Total-hours-lost-Target" = $17,
+        "Total-hours-lost-completed" = $18,
+        "Factory-efficiency-objective" = $19,
+        "Factory-efficiency-realise" = $20,
+        "Status" = $21,
+        "spare-parts-stock-objective" = $22,
+        "spare-parts-stock-realise" = $23
+      WHERE maintenance_id = $24
+      RETURNING *;
+    `;
+
+    const values = [
+      form["VOH-objective"],
+      form["Voh-realise"],
+      form["Energy-consumption-objective"],
+      form["Energy-consumption-realise"],
+      form["Maintenance-PO-objective"],
+      form["Maintenance-PO-realise"],
+      form["Prenventif-Real-objective"],
+      form["Prenventif-Real-realise"],
+      form["Maintenance-Cost-objective"],
+      form["Maintenance-Cost-realise"],
+      form["MTBF-Target"],
+      form["MTBF-Completed"],
+      form["MTTR-Target"],
+      form["MTTR-Completed"],
+      form["Availability-objective"],
+      form["Availability-realise"],
+      form["Total-hours-lost-Target"],
+      form["Total-hours-lost-completed"],
+      form["Factory-efficiency-objective"],
+      form["Factory-efficiency-realise"],
+      form["Status"],
+      form["spare-parts-stock-objective"],
+      form["spare-parts-stock-realise"],
+      id
+    ];
+
+    const result = await db.query(query, values);
+
+    res.status(200).json({
+      message: "Preventive maintenance updated successfully",
+      data: result.rows[0]
+    });
+
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error updating maintenance:", err);
     res.status(500).json({ error: "Failed to update maintenance" });
   }
 });
+
 
 module.exports = router;
