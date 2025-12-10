@@ -137,8 +137,9 @@ router.put("/edit/:id", async (req, res) => {
         "Factory-efficiency-realise" = $20,
         "Status" = $21,
         "spare-parts-stock-objective" = $22,
-        "spare-parts-stock-realise" = $23
-      WHERE maintenance_id = $24
+        "spare-parts-stock-realise" = $23,
+        "created-date" = $24
+      WHERE maintenance_id = $25
       RETURNING *;
     `;
 
@@ -166,6 +167,7 @@ router.put("/edit/:id", async (req, res) => {
       form["Status"],
       form["spare-parts-stock-objective"],
       form["spare-parts-stock-realise"],
+      form["created-date"], // <-- NEW FIELD
       id
     ];
 
